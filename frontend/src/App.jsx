@@ -28,7 +28,7 @@ function App() {
     <div className="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-900">
       <Navbar />
 
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow flex flex-col">
         <Routes>
           {/* Public */}
           <Route path="/" element={<Navigate to="/menu" />} />
@@ -36,15 +36,15 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Customer */}
-          <Route path="/menu" element={<ProtectedRoute><MenuPage /></ProtectedRoute>} />
-          <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
-          <Route path="/orders" element={<ProtectedRoute><OrderHistoryPage /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute allowBoth><ProfilePage /></ProtectedRoute>} />
+          <Route path="/menu" element={<ProtectedRoute><div className="container mx-auto px-4 py-8"><MenuPage /></div></ProtectedRoute>} />
+          <Route path="/cart" element={<ProtectedRoute><div className="container mx-auto px-4 py-8"><CartPage /></div></ProtectedRoute>} />
+          <Route path="/orders" element={<ProtectedRoute><div className="container mx-auto px-4 py-8"><OrderHistoryPage /></div></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute allowBoth><div className="container mx-auto px-4 py-8"><ProfilePage /></div></ProtectedRoute>} />
 
           {/* Admin */}
           <Route path="/admin" element={<Navigate to="/admin/orders" />} />
-          <Route path="/admin/orders" element={<ProtectedRoute adminOnly><AdminOrderQueuePage /></ProtectedRoute>} />
-          <Route path="/admin/menu" element={<ProtectedRoute adminOnly><AdminMenuPage /></ProtectedRoute>} />
+          <Route path="/admin/orders" element={<ProtectedRoute adminOnly><div className="container mx-auto px-4 py-8"><AdminOrderQueuePage /></div></ProtectedRoute>} />
+          <Route path="/admin/menu" element={<ProtectedRoute adminOnly><div className="container mx-auto px-4 py-8"><AdminMenuPage /></div></ProtectedRoute>} />
         </Routes>
       </main>
     </div>
