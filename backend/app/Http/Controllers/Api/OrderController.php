@@ -81,10 +81,28 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'status' => 'required|in:Pending,Preparing,Ready',
+            'status' => 'required|in:Pending,Preparing,Ready,Completed,Cancelled',
         ]);
 
         $order->update(['status' => $validated['status']]);
+
+        return response()->json($order);
+    }
+
+    // Customer: Cancel an order if it is still Pending
+    public function cancel(Request $request, Order $order)
+    {
+        // Ensure user owns the order
+        if ($request->user()->user_id !== $order->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Only Pending orders can be cancelled by the user
+        if ($order->status !== 'Pending') {
+            return response()->json(['message' => 'Only pending orders can be cancelled.'], 400);
+        }
+
+        $order->update(['status' => 'Cancelled']);
 
         return response()->json($order);
     }

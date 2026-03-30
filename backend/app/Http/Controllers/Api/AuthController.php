@@ -18,6 +18,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'phone_number' => 'required|string|max:20',
             'password' => 'required|string|min:8',
+            'role' => 'nullable|string|in:admin,customer',
         ]);
 
         $user = User::create([
@@ -25,7 +26,7 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'phone_number' => $validated['phone_number'],
             'password' => $validated['password'],
-            'role' => 'customer', // Default role for new signups
+            'role' => $validated['role'] ?? 'customer',
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;

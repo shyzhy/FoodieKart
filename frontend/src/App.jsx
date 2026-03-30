@@ -7,17 +7,18 @@ import RegisterPage from './pages/RegisterPage';
 import MenuPage from './pages/MenuPage';
 import CartPage from './pages/CartPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
+import ProfilePage from './pages/ProfilePage';
 
 import AdminOrderQueuePage from './pages/AdminOrderQueuePage';
 import AdminMenuPage from './pages/AdminMenuPage';
 
-const ProtectedRoute = ({ children, adminOnly = false }) => {
+const ProtectedRoute = ({ children, adminOnly = false, allowBoth = false }) => {
   const { user, loading, isAdmin } = useAuth();
 
   if (loading) return <div className="flex h-screen items-center justify-center animate-pulse">Loading auth...</div>;
   if (!user) return <Navigate to="/login" />;
   if (adminOnly && !isAdmin) return <Navigate to="/menu" />;
-  if (!adminOnly && isAdmin) return <Navigate to="/admin" />;
+  if (!allowBoth && !adminOnly && isAdmin) return <Navigate to="/admin" />;
 
   return children;
 };
@@ -38,6 +39,7 @@ function App() {
           <Route path="/menu" element={<ProtectedRoute><MenuPage /></ProtectedRoute>} />
           <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
           <Route path="/orders" element={<ProtectedRoute><OrderHistoryPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute allowBoth><ProfilePage /></ProtectedRoute>} />
 
           {/* Admin */}
           <Route path="/admin" element={<Navigate to="/admin/orders" />} />
